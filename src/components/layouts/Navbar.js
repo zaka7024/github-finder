@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 const Navbar = ({icon, title}) => {
     return (
         <nav className="navbar bg-primary">
-            <h1>
+            <h1 className='slide-down'>
                 <i className={icon}/>
                 {title}
             </h1>

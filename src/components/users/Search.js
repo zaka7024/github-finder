@@ -1,48 +1,44 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from "prop-types";
 
-class Search extends React.Component {
-    state = {
-        query: ''
+const Search = ({setAlert, onSearch, showClear, onClear}) => {
+    const [query, setQuery] = useState('')
+
+    const onChange = (e) => {
+        setQuery(e.target.value)
     }
 
-    static propTypes = {
-        onSearch: PropTypes.func.isRequired,
-        onClear: PropTypes.func.isRequired,
-        showClear: PropTypes.bool.isRequired,
-        setAlert: PropTypes.func.isRequired,
-    }
-
-    onChange = (e) => {
-        this.setState({[e.target.name]: e.target.value})
-    }
-
-    onSubmit = (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
-        if(this.state.query.trim() === '') {
-            this.props.setAlert('Please enter something!', 'light')
+        if (query.trim() === '') {
+            setAlert('Please enter something!', 'light')
             return;
         }
-        this.props.onSearch(this.state.query)
-        this.setState({query: ''})
+        onSearch(query)
+        setQuery('')
     }
 
-    render() {
-        return (
-            <form onSubmit={this.onSubmit}>
-                <input type="text" value={this.state.query} name='query' onChange={this.onChange} placeholder='search'/>
-                <input
-                    type="submit"
-                    value='search'
-                    className='btn btn-dark btn-block'/>
-                {this.props.showClear && <input
-                    onClick={this.props.onClear}
-                    type="button"
-                    value='clear'
-                    className='btn btn-light btn-block'/>}
-            </form>
-        );
-    }
+    return (
+        <form onSubmit={onSubmit} className='fade-in'>
+            <input type="text" value={query} name='query' onChange={onChange} placeholder='search'/>
+            <input
+                type="submit"
+                value='search'
+                className='btn btn-dark btn-block'/>
+            {showClear && <input
+                onClick={onClear}
+                type="button"
+                value='clear'
+                className='btn btn-light btn-block'/>}
+        </form>
+    );
+}
+
+Search.propTypes = {
+    onSearch: PropTypes.func.isRequired,
+    onClear: PropTypes.func.isRequired,
+    showClear: PropTypes.bool.isRequired,
+    setAlert: PropTypes.func.isRequired,
 }
 
 export default Search;
